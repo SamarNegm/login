@@ -12,8 +12,6 @@ class LoginWithEmailAndPass extends StatefulWidget {
   _LoginWithEmailAndPassState createState() => _LoginWithEmailAndPassState();
 }
 
-class EmailSignInBloc {}
-
 class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
   FocusNode _emailFn = FocusNode();
 
