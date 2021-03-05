@@ -6,7 +6,7 @@ import 'package:login/persentation/platform_exception_alert_dialog.dart';
 
 class LoginWithEmailAndPass extends StatefulWidget {
   LoginWithEmailAndPass(this.bloc);
-  SignInBloc bloc;
+  final SignInBloc bloc;
 
   @override
   _LoginWithEmailAndPassState createState() => _LoginWithEmailAndPassState();
@@ -37,7 +37,8 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
     }
     _formKey.currentState.save();
     try {
-      //  await widget.bloc.submit(true);
+      await widget.bloc.add(LoginSubmitted(
+          email: _emailController.text, pass: _passwordController.text));
       // Navigator.of(context).pop();
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
@@ -79,13 +80,16 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               style: TextStyle(color: Colors.black54),
+              onChanged: (value) {
+                widget.bloc.add(LoginUsernameChanged(value));
+              },
               validator: (value) {
                 if (value.isEmpty || !value.contains('@')) {
                   return 'Invalid email!';
                 }
               },
               onSaved: (value) {
-                //    widget.bloc.updateEmail(value);
+                widget.bloc.add(LoginUsernameChanged(value));
               },
             ),
           ),
@@ -112,11 +116,11 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
                 }
               },
               onSaved: (value) {
-                // widget.bloc.updatePassword(value);
+                widget.bloc.add(LoginPasswordChanged(value));
               },
             ),
           ),
-          1 == 2
+          widget.bloc.state is Loaded
               //   model.isLoading
               ? CircularProgressIndicator()
               : Padding(

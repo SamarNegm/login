@@ -11,11 +11,9 @@ abstract class LoginEvent extends Equatable {
 }
 
 class LoginUsernameChanged extends LoginEvent {
-  const LoginUsernameChanged(this.username, this.pass);
+  const LoginUsernameChanged(this.username);
 
   final String username;
-  final String pass;
-
   @override
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();
@@ -57,12 +55,6 @@ class LoginState extends Equatable {
   List<Object> get props => throw UnimplementedError();
 }
 
-class NameChaned extends LoginState {
-  @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
-}
-
 class PassChaned extends LoginState {
   @override
   // TODO: implement props
@@ -90,7 +82,6 @@ class SignInBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginPasswordChanged) {
-    } else if (event is LoginUsernameChanged) {
     } else if (event is IsLoading) {
     } else if (event is LoginSubmitted) {
       yield IsLoading();
