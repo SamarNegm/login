@@ -37,9 +37,8 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
     }
     _formKey.currentState.save();
     try {
-      await widget.bloc.add(LoginSubmitted(
+      widget.bloc.add(LoginSubmitted(
           email: _emailController.text, pass: _passwordController.text));
-      // Navigator.of(context).pop();
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
         title: 'Log in failed',
@@ -120,7 +119,7 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
               },
             ),
           ),
-          widget.bloc.state is Loaded
+          widget.bloc.state is IsLoading
               //   model.isLoading
               ? CircularProgressIndicator()
               : Padding(
