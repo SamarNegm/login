@@ -10,13 +10,11 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SignInBloc>(context);
-    print('hi');
     //print(bloc.state.toString());
     return BlocBuilder<SignInBloc, LoginState>(
         cubit: bloc,
         builder: (context, state) {
           if (state is Loaded) {
-            print('why1');
             return Scaffold(
               body: Container(
                 child: Center(child: Text('hi')),
