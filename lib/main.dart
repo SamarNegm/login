@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SignInBloc(loginApi: LoginApi()),
+    return BlocProvider<SignInBloc>(
+      lazy: true,
+      create: (context) => SignInBloc(LoginApi()),
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.purple,

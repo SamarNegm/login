@@ -1,13 +1,19 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:login/data/loginRepo.dart';
 
-abstract class LoginEvent extends Equatable {
+class LoginEvent extends Equatable {
   const LoginEvent();
+  List<Object> get props => [];
+}
+
+class start extends LoginEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
 }
 
 class LoginUsernameChanged extends LoginEvent {
@@ -16,7 +22,7 @@ class LoginUsernameChanged extends LoginEvent {
   final String username;
   @override
   // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [username];
 }
 
 class LoginPasswordChanged extends LoginEvent {
@@ -36,7 +42,7 @@ class LoginPasswordChanged extends LoginEvent {
 
   @override
   // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [password];
 }
 
 class LoginSubmitted extends LoginEvent {
@@ -46,7 +52,7 @@ class LoginSubmitted extends LoginEvent {
 
   @override
   // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [email, pass];
 }
 
 class LoginState extends Equatable {
@@ -55,10 +61,9 @@ class LoginState extends Equatable {
   List<Object> get props => throw UnimplementedError();
 }
 
-class PassChaned extends LoginState {
-  @override
+class notLogedIn extends LoginState {
   // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [];
 }
 
 class IsLoading extends LoginState {
@@ -74,15 +79,17 @@ class Loaded extends LoginState {
 }
 
 class SignInBloc extends Bloc<LoginEvent, LoginState> {
-  SignInBloc({
-    @required this.loginApi,
-  }) : super(null);
-  final LoginApi loginApi;
+  SignInBloc(this.loginApi) : super(notLogedIn());
+
+  LoginApi loginApi;
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    print(';');
     if (event is LoginPasswordChanged) {
     } else if (event is IsLoading) {
+    } else if (event is start) {
+      yield notLogedIn();
     } else if (event is LoginSubmitted) {
       yield IsLoading();
       try {
@@ -91,6 +98,9 @@ class SignInBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         throw e;
       }
+    } else {
+      print('hellow');
+      yield notLogedIn();
     }
   }
 }

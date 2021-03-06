@@ -9,122 +9,152 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SignInBloc bloc = BlocProvider.of<SignInBloc>(context);
-    return Scaffold(
-        body: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-            },
-            child: Stack(children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black12,
-                      Colors.black54,
-                    ],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: [0, 1],
-                  ),
-                ),
+    final bloc = BlocProvider.of<SignInBloc>(context);
+    print('hi');
+    //print(bloc.state.toString());
+    return BlocBuilder<SignInBloc, LoginState>(
+        cubit: bloc,
+        builder: (context, state) {
+          if (state is Loaded) {
+            print('why1');
+            return Scaffold(
+              body: Container(
+                child: Center(child: Text('hi')),
               ),
-              SingleChildScrollView(
-                  child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 30, right: 30, left: 30),
-                                    child: SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .15,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                .15,
-                                        child: Image.asset(
-                                            'assets/images/logo.png')),
-                                  ),
-                                ]),
-                            // StreamBuilder<bool>(
-                            //     initialData: false,
-                            //     stream: bloc.isLoadingStram,
-                            //     builder: (context, snapshot) {
-                            //       return
-                            Container(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+            );
+          } else {
+            print('why');
+            return Scaffold(
+                body: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                    },
+                    child: Stack(children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.black12,
+                              Colors.black54,
+                            ],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: [0, 1],
+                          ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Center(
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .6,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .98,
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60.0),
+                                    Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 30,
+                                                right: 30,
+                                                left: 30),
+                                            child: SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .15,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .15,
+                                                child: Image.asset(
+                                                    'assets/images/logo.png')),
                                           ),
-                                          elevation: 8.0,
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 30,
-                                                  left: 16,
-                                                  right: 16,
-                                                  bottom: 30),
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    LoginWithEmailAndPass(bloc),
-
-                                                    Center(
-                                                      child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
+                                        ]),
+                                    // StreamBuilder<bool>(
+                                    //     initialData: false,
+                                    //     stream: bloc.isLoadingStram,
+                                    //     builder: (context, snapshot) {
+                                    //       return
+                                    Container(
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Center(
+                                              child: SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .6,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .98,
+                                                child: Card(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            60.0),
+                                                  ),
+                                                  elevation: 8.0,
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 30,
+                                                              left: 16,
+                                                              right: 16,
+                                                              bottom: 30),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
                                                           children: [
-                                                            Text(
-                                                                'i\'m a new user'),
-                                                            TextButton(
-                                                                onPressed:
-                                                                    () {},
-                                                                child: Text(
-                                                                  'Sign Up',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    color: Colors
-                                                                        .purple,
-                                                                  ),
-                                                                )),
-                                                          ]),
-                                                    ),
+                                                            LoginWithEmailAndPass(),
 
-                                                    //   FlatButton(onPressed: (){} , label: Text('Continue with google'))
-                                                  ],
+                                                            Center(
+                                                              child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Text(
+                                                                        'i\'m a new user'),
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {},
+                                                                        child:
+                                                                            Text(
+                                                                          'Sign Up',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                20,
+                                                                            color:
+                                                                                Colors.purple,
+                                                                          ),
+                                                                        )),
+                                                                  ]),
+                                                            ),
+
+                                                            //   FlatButton(onPressed: (){} , label: Text('Continue with google'))
+                                                          ],
+                                                        ),
+                                                      )),
                                                 ),
-                                              )),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
                                     )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ])))
-            ])));
+                                  ])))
+                    ])));
+          }
+        });
   }
 }

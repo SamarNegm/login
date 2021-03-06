@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login/logic/SignInBloc.dart';
 import 'package:login/persentation/custom_raised_button.dart';
 import 'package:login/persentation/platform_exception_alert_dialog.dart';
 
 class LoginWithEmailAndPass extends StatefulWidget {
-  LoginWithEmailAndPass(this.bloc);
-  final SignInBloc bloc;
+  LoginWithEmailAndPass();
 
   @override
   _LoginWithEmailAndPassState createState() => _LoginWithEmailAndPassState();
@@ -37,7 +37,8 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
     }
     _formKey.currentState.save();
     try {
-      widget.bloc.add(LoginSubmitted(
+      final bloc = BlocProvider.of<SignInBloc>(context);
+      bloc.add(LoginSubmitted(
           email: _emailController.text, pass: _passwordController.text));
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
@@ -49,6 +50,8 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<SignInBloc>(context);
+    //print(widget.bloc.state.toString() + ' stat*******');
     return Form(
       key: _formKey,
       child: Column(
@@ -57,9 +60,10 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
           Text(
             'Login',
             style: TextStyle(
-                fontSize: 20,
-                color: Colors.purple,
-                fontWeight: FontWeight.normal),
+              fontSize: 20,
+              color: Colors.purple,
+              fontWeight: FontWeight.normal,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -80,7 +84,7 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
               textInputAction: TextInputAction.next,
               style: TextStyle(color: Colors.black54),
               onChanged: (value) {
-                widget.bloc.add(LoginUsernameChanged(value));
+                bloc.add(LoginUsernameChanged(value));
               },
               validator: (value) {
                 if (value.isEmpty || !value.contains('@')) {
@@ -88,7 +92,7 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
                 }
               },
               onSaved: (value) {
-                widget.bloc.add(LoginUsernameChanged(value));
+                bloc.add(LoginUsernameChanged(value));
               },
             ),
           ),
@@ -115,11 +119,11 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
                 }
               },
               onSaved: (value) {
-                widget.bloc.add(LoginPasswordChanged(value));
+                bloc.add(LoginPasswordChanged(value));
               },
             ),
           ),
-          widget.bloc.state is IsLoading
+          bloc.state is IsLoading
               //   model.isLoading
               ? CircularProgressIndicator()
               : Padding(
