@@ -33,11 +33,13 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
+      print('hi');
       return;
     }
     _formKey.currentState.save();
     try {
       final bloc = BlocProvider.of<SignInBloc>(context);
+      print('hi2');
       bloc.add(LoginSubmitted(
           email: _emailController.text, pass: _passwordController.text));
     } on PlatformException catch (e) {
@@ -51,7 +53,7 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SignInBloc>(context);
-    //print(widget.bloc.state.toString() + ' stat*******');
+    print(bloc.state.toString() + ' state*******');
     return Form(
       key: _formKey,
       child: Column(
@@ -67,31 +69,30 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-            child: TextFormField(
-              onFieldSubmitted: (_) {
+            child: TextField(
+              key: Key('t1'),
+              onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_pass);
+                print('onsubmitted' + _emailController.text);
+                bloc.add(LoginUsernameChanged(_emailController.text));
               },
               controller: _emailController,
               focusNode: _emailFn,
               decoration: InputDecoration(
-                  labelStyle: TextStyle(fontSize: 12, color: Colors.black54),
-                  labelText: 'E-Mail',
-                  prefixIcon: Icon(
-                    Icons.email_outlined,
-                    color: Colors.black54,
-                  )),
+                errorText: bloc.state is emailErorr || bloc.state is both
+                    ? bloc.stateModel.emailErrorText
+                    : null,
+                labelStyle: TextStyle(fontSize: 12, color: Colors.black54),
+                labelText: 'E-Mail',
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Colors.black54,
+                ),
+              ),
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               style: TextStyle(color: Colors.black54),
               onChanged: (value) {
-                bloc.add(LoginUsernameChanged(value));
-              },
-              validator: (value) {
-                if (value.isEmpty || !value.contains('@')) {
-                  return 'Invalid email!';
-                }
-              },
-              onSaved: (value) {
                 bloc.add(LoginUsernameChanged(value));
               },
             ),
@@ -99,10 +100,14 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
           Padding(
             padding:
                 const EdgeInsets.only(top: 6, left: 12, right: 12, bottom: 12),
-            child: TextFormField(
+            child: TextField(
+              key: Key('t2'),
               focusNode: _pass,
               obscureText: true,
               decoration: InputDecoration(
+                  errorText: bloc.state is passwordError || bloc.state is both
+                      ? bloc.stateModel.passwordErrorText
+                      : null,
                   labelStyle: TextStyle(fontSize: 12, color: Colors.black54),
                   labelText: 'Password',
                   prefixIcon: Icon(
@@ -113,12 +118,7 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
               textInputAction: TextInputAction.done,
               controller: _passwordController,
               style: TextStyle(color: Colors.black54),
-              validator: (value) {
-                if (value.isEmpty || value.length < 4) {
-                  return 'Invalid Passord!';
-                }
-              },
-              onSaved: (value) {
+              onSubmitted: (value) {
                 bloc.add(LoginPasswordChanged(value));
               },
             ),
