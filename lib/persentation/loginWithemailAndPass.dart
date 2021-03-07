@@ -37,17 +37,13 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
       return;
     }
     _formKey.currentState.save();
-    try {
-      final bloc = BlocProvider.of<SignInBloc>(context);
 
-      bloc.add(LoginSubmitted(
-          email: _emailController.text, pass: _passwordController.text));
-    } on PlatformException catch (e) {
-      PlatformExceptionAlertDialog(
-        title: 'Log in failed',
-        exception: e,
-      ).show(context);
-    }
+    final bloc = BlocProvider.of<SignInBloc>(context);
+
+    await bloc.add(LoginSubmitted(
+        email: _emailController.text,
+        pass: _passwordController.text,
+        context: context));
   }
 
   @override

@@ -1,18 +1,19 @@
 import 'package:flutter/services.dart';
+import 'package:login/logic/http_exception.dart';
 import 'package:login/persentation/platform_alert_dialog.dart';
 import 'package:meta/meta.dart';
 
 class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   PlatformExceptionAlertDialog({
     @required String title,
-    @required PlatformException exception,
+    @required HttpException exception,
   }) : super(
             title: title,
             content: _message(exception),
             defaultActionText: 'OK');
 
-  static String _message(PlatformException exception) {
-    return _errors[exception.code] ?? exception.message;
+  static String _message(HttpException exception) {
+    return _errors[exception.message] ?? exception.message;
   }
 
   static Map<String, String> _errors = {
@@ -21,6 +22,7 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
     ///   • `ERROR_EMAIL_ALREADY_IN_USE` - If the email is already in use by a different account.
     ///   • `ERROR_INVALID_EMAIL` - If the [email] address is malformed.
     'ERROR_WRONG_PASSWORD': 'The password is invalid',
+    'INVALID_EMAIL': 'The  Email is invalid'
 
     ///   • `ERROR_USER_NOT_FOUND` - If there is no user corresponding to the given [email] address, or if the user has been deleted.
     ///   • `ERROR_USER_DISABLED` - If the user has been disabled (for example, in the Firebase console)

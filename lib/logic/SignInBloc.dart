@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login/data/email_sign_in_model.dart';
-
 import 'package:login/data/loginRepo.dart';
+import 'package:login/persentation/platform_exception_alert_dialog.dart';
 
 class LoginEvent extends Equatable {
   const LoginEvent();
@@ -49,8 +50,13 @@ class LoginPasswordChanged extends LoginEvent {
 class LoginSubmitted extends LoginEvent {
   final String email;
   final String pass;
+  final BuildContext context;
 
-  const LoginSubmitted({this.email, this.pass});
+  const LoginSubmitted({
+    this.email,
+    this.pass,
+    this.context,
+  });
 
   @override
   // TODO: implement props
@@ -134,6 +140,11 @@ class SignInBloc extends Bloc<LoginEvent, LoginState> {
           await LoginApi().signup(event.email, event.pass);
           yield Loaded();
         } catch (e) {
+          PlatformExceptionAlertDialog(
+            title: 'Log in failed',
+            exception: e,
+          ).show(event.context);
+          yield notLogedIn();
           throw e;
         }
       }
