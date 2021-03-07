@@ -111,18 +111,11 @@ class SignInBloc extends Bloc<LoginEvent, LoginState> {
       stateModel = state.model.copyWith(password: event.password);
     } else if (event is LoginUsernameChanged) {
       stateModel = state.model.copyWith(email: event.username);
-      print(state.model.emailValidator.isValid(event.username + ',,,'));
     } else if (event is IsLoading) {
     } else if (event is LoginSubmitted) {
       stateModel =
           state.model.copyWith(email: event.email, password: event.pass);
-      print(stateModel.email +
-          ' 1 ' +
-          stateModel.password +
-          ' 2 ' +
-          stateModel.canSubmit.toString() +
-          '  3 ' +
-          stateModel.emailValidator.isValid(event.email).toString());
+
       if (!stateModel.emailValidator.isValid(event.email)) {
         yield emailErorr();
       }

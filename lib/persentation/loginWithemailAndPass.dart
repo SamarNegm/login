@@ -33,13 +33,13 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
-      print('hi');
+
       return;
     }
     _formKey.currentState.save();
     try {
       final bloc = BlocProvider.of<SignInBloc>(context);
-      print('hi2');
+
       bloc.add(LoginSubmitted(
           email: _emailController.text, pass: _passwordController.text));
     } on PlatformException catch (e) {
@@ -53,7 +53,6 @@ class _LoginWithEmailAndPassState extends State<LoginWithEmailAndPass> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SignInBloc>(context);
-    print(bloc.state.toString() + ' state*******');
     return Form(
       key: _formKey,
       child: Column(
