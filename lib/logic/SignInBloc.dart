@@ -138,7 +138,6 @@ class SignInBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
     } else {
-      print('hello');
       yield notLogedIn();
     }
   }
